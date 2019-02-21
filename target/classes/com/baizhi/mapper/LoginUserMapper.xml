@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.baizhi.dao.LoginUserDao">
+    <!-- LoginUser的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_LoginUser_Map" type="com.baizhi.entity.LoginUser">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+    </resultMap>
+
+    <!-- 数据库中表名为:ems_login_user的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="ems_login_user_Column">
+        ems_login_user.id as id
+        ,ems_login_user.username as username
+        ,ems_login_user.password as password
+    </sql>
+
+    <!-- 通过LoginUser的username获得对应数据库中表的数据对象-->
+    <select id="selectByUsername" parameterType="java.lang.String" resultMap="result_LoginUser_Map">
+        select 
+            <include refid="ems_login_user_Column" /> 
+        from ems_login_user
+        where ems_login_user.username = #{username}
+    </select>
+
+    <insert id="insert" parameterType="LoginUser">
+        insert into ems_login_user values (0,#{username},#{password},#{realname},#{sex})
+    </insert>
+
+</mapper>
